@@ -313,7 +313,7 @@ class Space extends Array {
         // log("Layout column simple")
         for (let i = 0; i < windows.length; i++) {
             let mw = windows[i];
-            let targetHeight = targetHeights[i];
+            let targetHeight = this.workArea().height; // targetHeights[i];
 
             let f = mw.get_frame_rect();
 
@@ -374,7 +374,7 @@ class Space extends Array {
                 }
             }
 
-            y += targetHeight + prefs.window_gap;
+            // y += targetHeight + prefs.window_gap;
         }
         return [targetWidth, widthChanged || heightChanged, y];
     }
@@ -2584,6 +2584,18 @@ function ensureViewport(meta_window, space, force) {
         x, force
     });
 
+    if (!inGrab) {
+        let [pointerX, pointerY, mask] = global.get_pointer();
+        let relPointerX = pointerX - space.monitor.x - space.cloneContainer.x;
+        let relPointerY = pointerY - space.monitor.y - space.cloneContainer.y;
+        if (!utils.isPointInsideActor(selected.clone, relPointerX, relPointerY)) {
+            let dx = Math.min(selected.clone.x + selected.clone.width - 10, Math.max(selected.clone.x + 10, relPointerX)) - relPointerX;
+            let dy = Math.min(selected.clone.y + selected.clone.height - 10, Math.max(selected.clone.y + 10, relPointerY)) - relPointerY;
+            debug('Moving', 'warping pointer to new viewport', dx, dy)
+            utils.warpPointer(pointerX + dx, pointerY + dy)
+        }
+    }
+
     selected.raise();
     selected.clone.raise_top();
     updateSelection(space, meta_window);
@@ -2749,7 +2761,7 @@ function focus_handler(metaWindow, user_data) {
        stack, not the mru, when auto choosing focus after closing a window.
     */
     let stack = sortWindows(space, neighbours);
-    stack.forEach(w => w.raise());
+    // stack.forEach(w => w.raise());
     metaWindow.raise();
 
     ensureViewport(metaWindow, space);
@@ -2855,6 +2867,31 @@ function toggleMaximizeHorizontally(metaWindow) {
         metaWindow.unmaximizedRect = frame;
         metaWindow.move_resize_frame(true, x, frame.y, workArea.width - minimumMargin()*2, frame.height);
     }
+}
+
+function expandLeft(metaWindow) {
+    metaWindow = metaWindow || display.focus_window;
+
+    let space = spaces.spaceOfWindow(metaWindow);
+    let workArea = space.workArea();
+    let frame = metaWindow.get_frame_rect();
+
+    let x = workArea.x + space.monitor.x + minimumMargin();
+    let w = frame.width - (x - frame.x);
+    metaWindow.clone.targetX = frame.x + space.targetX;
+    metaWindow.move_resize_frame(true, frame.x, frame.y, w, frame.height);
+}
+
+function expandRight(metaWindow) {
+    metaWindow = metaWindow || display.focus_window;
+
+    let space = spaces.spaceOfWindow(metaWindow);
+    let workArea = space.workArea();
+    let frame = metaWindow.get_frame_rect();
+
+    let w = workArea.width - frame.x - minimumMargin();
+    metaWindow.clone.targetX = -frame.x;
+    metaWindow.move_resize_frame(true, frame.x, frame.y, w, frame.height);
 }
 
 function resizeHInc(metaWindow) {

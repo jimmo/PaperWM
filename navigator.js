@@ -214,7 +214,7 @@ var Navigator = class Navigator {
     _showMinimap(space) {
         let minimap = this.minimaps.get(space);
         if (!minimap) {
-            let minimapId = Mainloop.timeout_add(200, () => {
+            let minimapId = Mainloop.timeout_add(1000, () => {
                 minimap = new Minimap.Minimap(space, this.monitor);
                 space.startAnimate();
                 minimap.show(false);

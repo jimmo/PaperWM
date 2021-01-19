@@ -232,6 +232,16 @@ function init() {
                                     metaWindow.make_fullscreen();
                             }, Meta.KeyBindingFlags.PER_WINDOW);
 
+    registerPaperAction('expand-left',
+                        dynamic_function_ref("expandLeft",
+                                             Tiling),
+                        Meta.KeyBindingFlags.PER_WINDOW);
+
+    registerPaperAction('expand-right',
+                        dynamic_function_ref("expandRight",
+                                             Tiling),
+                        Meta.KeyBindingFlags.PER_WINDOW);
+
 }
 
 function idOf(mutterName) {

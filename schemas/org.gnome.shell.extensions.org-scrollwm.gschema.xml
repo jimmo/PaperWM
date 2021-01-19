@@ -217,6 +217,16 @@
       <summary>Toggle fullscreen</summary>
     </key>
 
+    <key type="as" name="expand-left">
+      <default><![CDATA[[]]]></default>
+      <summary>Expand current window left</summary>
+    </key>
+
+    <key type="as" name="expand-right">
+      <default><![CDATA[[]]]></default>
+      <summary>Expand current window right</summary>
+    </key>
+
     <key type="as" name="develop-set-globals">
       <default><![CDATA[['<Super>Insert']]]></default>
       <summary>

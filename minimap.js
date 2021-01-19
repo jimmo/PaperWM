@@ -172,7 +172,7 @@ class Minimap extends Array {
                 c.set_position(x, y);
                 this._allocateClone(c);
                 w = Math.max(w, c.width);
-                y += c.height;
+                // y += c.height;
             }
             x += w + gap;
         }

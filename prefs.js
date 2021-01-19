@@ -138,7 +138,7 @@ class SettingsWidget {
                 this._settings.set_boolean('only-scratch-in-overview', false);
                 this._settings.set_boolean('disable-scratch-in-overview', false);
             }
-                
+
         });
 
         let disableCorner = this.builder.get_object('override-hot-corner');
@@ -235,7 +235,7 @@ class SettingsWidget {
           'slurp-in', 'barf-out', 'center-horizontally',
           'paper-toggle-fullscreen', 'toggle-maximize-width', 'resize-h-inc',
           'resize-h-dec', 'resize-w-inc', 'resize-w-dec', 'cycle-width',
-          'cycle-height', 'take-window']
+          'cycle-height', 'take-window', 'expand-left', 'expand-right']
             .forEach(k => {
             addKeybinding(windows.model.child_model, settings, k);
         });
